@@ -74,37 +74,36 @@ def move():
 	if skk.direction=='right':
 		skk.setx(skk.xcor()+20)
 while True:
-	wn.update()
 	(x,y)=skk.position()
 	for i in range(len(snake_body)-1,0,-1):
 		snake_body[i].goto(snake_body[i-1].position())
 	if len(snake_body)>0:
 		nx,ny=skk.position()
 		snake_body[0].goto(nx,ny)
+	if x>=w/2 or x<= -w/2 or y>=h/2 or y<=-h/2:break #wall collision
 	move()
 	wn.update()
+
 	#check wall and self collision
-	if x>=w/2 or x<= -w/2 or y>=h/2 or y<=-h/2:GO=1;break #wall collision
 	for i in range(len(snake_body)-1):
 		if skk.position()==snake_body[i].position():
-			Bcol=1;GO=1
-	if Bcol==1:break #break the loop when self collide
+			break #break the loop when self collide
+
  	#check for food collision
 	if abs(skk.distance(food)) <=18:
+     #Food Object at Random Place
+		#eat_sound() Sound Not coming at perfect Time
 		food.setx(random.randint(-280,280))
 		food.sety(random.randint(-280,280))
 		score=score+1
-		threading.Thread(target=eat_sound).start()
-  		#New Turtle creation
+  	#New Turtle creation
 		segment = turtle.Turtle()
 		segment.color("gray")
 		segment.shape("square")
 		segment.speed(0)
 		segment.penup()
 		snake_body.append(segment) #make snake object::::::::::: first working fine
-		snake_body[0].goto(x,y)
 		for i in range(1,len(snake_body),-1):
 			snake_body[i].goto(x,y)
-	wn.update()
 	time.sleep(delay)
 game_over(score)
